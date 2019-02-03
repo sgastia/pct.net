@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Unity" Version="5.9.3" />
   </ItemGroup>
 
@@ -16,6 +17,13 @@
   <ItemGroup>
     <ProjectReference Include="..\PCT.Dominio\PCT.Dominio.csproj" />
     <ProjectReference Include="..\PCT.Managers\PCT.Managers.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

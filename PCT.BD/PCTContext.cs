@@ -27,6 +27,17 @@ namespace PCT.BD
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ConciertoMusico>().HasKey(cm => new { cm.ConciertoId, cm.MusicoId });
+
+            modelBuilder.Entity<ConciertoMusico>()
+                .HasOne<Concierto>(cm => cm.Concierto)
+                .WithMany(c => c.Musicos)
+                .HasForeignKey(cm => cm.ConciertoId);
+
+            modelBuilder.Entity<ConciertoMusico>()
+                .HasOne<Musico>(cm => cm.Musico)
+                .WithMany(m => m.Conciertos)
+                .HasForeignKey(cm => cm.MusicoId);
 
         }
 
