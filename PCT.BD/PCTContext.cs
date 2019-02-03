@@ -8,6 +8,12 @@ namespace PCT.BD
 {
     public class PCTContext : DbContext
     {
+        /*
+        Comandos en Package Manager Console
+        PM> add-migration <NombreMigracion>
+        PM> update-database –verbose
+        http://www.entityframeworktutorial.net/efcore/entity-framework-core-console-application.aspx
+        */
 
         public PCTContext()
         {

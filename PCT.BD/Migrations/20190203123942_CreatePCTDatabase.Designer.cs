@@ -10,8 +10,8 @@ using PCT.BD;
 namespace PCT.BD.Migrations
 {
     [DbContext(typeof(PCTContext))]
-    [Migration("20190203025118_AddManyToMany_ConciertosMusicos")]
-    partial class AddManyToMany_ConciertosMusicos
+    [Migration("20190203123942_CreatePCTDatabase")]
+    partial class CreatePCTDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,6 +28,8 @@ namespace PCT.BD.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Descripcion");
+
+                    b.Property<DateTime>("Fecha");
 
                     b.Property<string>("Nombre");
 

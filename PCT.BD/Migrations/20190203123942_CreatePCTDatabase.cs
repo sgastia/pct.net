@@ -17,7 +17,8 @@ namespace PCT.BD.Migrations
                     Publicar = table.Column<bool>(nullable: false),
                     Nombre = table.Column<string>(nullable: true),
                     Descripcion = table.Column<string>(nullable: true),
-                    UrlPoster = table.Column<string>(nullable: true)
+                    UrlPoster = table.Column<string>(nullable: true),
+                    Fecha = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +30,9 @@ namespace PCT.BD.Migrations
                 columns: table => new
                 {
                     IdGaleria = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(nullable: true),
+                    Descripcion = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -47,18 +50,11 @@ namespace PCT.BD.Migrations
                     FechaNacimiento = table.Column<DateTime>(nullable: true),
                     Instrumentos = table.Column<int>(nullable: false),
                     Publicar = table.Column<bool>(nullable: false),
-                    EsIntegrantePermanente = table.Column<bool>(nullable: false),
-                    ConciertoIdConcierto = table.Column<int>(nullable: true)
+                    EsIntegrantePermanente = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Musicos", x => x.IdMusico);
-                    table.ForeignKey(
-                        name: "FK_Musicos_Conciertos_ConciertoIdConcierto",
-                        column: x => x.ConciertoIdConcierto,
-                        principalTable: "Conciertos",
-                        principalColumn: "IdConcierto",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -83,30 +79,57 @@ namespace PCT.BD.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ConciertoMusico",
+                columns: table => new
+                {
+                    MusicoId = table.Column<int>(nullable: false),
+                    ConciertoId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConciertoMusico", x => new { x.ConciertoId, x.MusicoId });
+                    table.ForeignKey(
+                        name: "FK_ConciertoMusico_Conciertos_ConciertoId",
+                        column: x => x.ConciertoId,
+                        principalTable: "Conciertos",
+                        principalColumn: "IdConcierto",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConciertoMusico_Musicos_MusicoId",
+                        column: x => x.MusicoId,
+                        principalTable: "Musicos",
+                        principalColumn: "IdMusico",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConciertoMusico_MusicoId",
+                table: "ConciertoMusico",
+                column: "MusicoId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ItemsGaleria_GaleriaIdGaleria",
                 table: "ItemsGaleria",
                 column: "GaleriaIdGaleria");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Musicos_ConciertoIdConcierto",
-                table: "Musicos",
-                column: "ConciertoIdConcierto");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ConciertoMusico");
+
+            migrationBuilder.DropTable(
                 name: "ItemsGaleria");
+
+            migrationBuilder.DropTable(
+                name: "Conciertos");
 
             migrationBuilder.DropTable(
                 name: "Musicos");
 
             migrationBuilder.DropTable(
                 name: "Galerias");
-
-            migrationBuilder.DropTable(
-                name: "Conciertos");
         }
     }
 }

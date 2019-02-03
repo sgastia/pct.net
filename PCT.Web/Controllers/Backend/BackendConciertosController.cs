@@ -8,24 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using PCT.BD;
 using PCT.Dominio;
 
-namespace PCT.Web.Controllers
+namespace PCT.Web.Controllers.Backend
 {
-    public class ConciertosController : Controller
+    public class BackendConciertosController : Controller
     {
-        private readonly IPCTRepository _repo;
+        private readonly PCTContext _context;
 
-        public ConciertosController(IPCTRepository repo)
+        public BackendConciertosController(PCTContext context)
         {
-            _repo = repo;
+            _context = context;
         }
 
-        // GET: Conciertos
+        // GET: BackendConciertos
         public async Task<IActionResult> Index()
         {
-            return View(await _repo.Conciertos_ToListAsync());
+            return View(await _context.Conciertos.ToListAsync());
         }
 
-        // GET: Conciertos/Details/5
+        // GET: BackendConciertos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,7 +33,8 @@ namespace PCT.Web.Controllers
                 return NotFound();
             }
 
-            var concierto = await _repo.Conciertos_FindById(id);
+            var concierto = await _context.Conciertos
+                .FirstOrDefaultAsync(m => m.IdConcierto == id);
             if (concierto == null)
             {
                 return NotFound();
@@ -42,13 +43,13 @@ namespace PCT.Web.Controllers
             return View(concierto);
         }
 
-        // GET: Conciertos/Create
+        // GET: BackendConciertos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Conciertos/Create
+        // POST: BackendConciertos/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -57,14 +58,14 @@ namespace PCT.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repo.Add(concierto);
-                await _repo.SaveChangesAsync();
+                _context.Add(concierto);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(concierto);
         }
 
-        // GET: Conciertos/Edit/5
+        // GET: BackendConciertos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,7 +73,7 @@ namespace PCT.Web.Controllers
                 return NotFound();
             }
 
-            var concierto = await _repo.Conciertos_FindById(id);
+            var concierto = await _context.Conciertos.FindAsync(id);
             if (concierto == null)
             {
                 return NotFound();
@@ -80,7 +81,7 @@ namespace PCT.Web.Controllers
             return View(concierto);
         }
 
-        // POST: Conciertos/Edit/5
+        // POST: BackendConciertos/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -96,8 +97,8 @@ namespace PCT.Web.Controllers
             {
                 try
                 {
-                    _repo.Update(concierto);
-                    await _repo.SaveChangesAsync();
+                    _context.Update(concierto);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -115,7 +116,7 @@ namespace PCT.Web.Controllers
             return View(concierto);
         }
 
-        // GET: Conciertos/Delete/5
+        // GET: BackendConciertos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,7 +124,8 @@ namespace PCT.Web.Controllers
                 return NotFound();
             }
 
-            Concierto concierto = await _repo.Conciertos_FindById(id);
+            var concierto = await _context.Conciertos
+                .FirstOrDefaultAsync(m => m.IdConcierto == id);
             if (concierto == null)
             {
                 return NotFound();
@@ -132,20 +134,20 @@ namespace PCT.Web.Controllers
             return View(concierto);
         }
 
-        // POST: Conciertos/Delete/5
+        // POST: BackendConciertos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            Concierto concierto = await _repo.Conciertos_FindAsync(id);
-            _repo.Remove(concierto);
-            await _repo.SaveChangesAsync();
+            var concierto = await _context.Conciertos.FindAsync(id);
+            _context.Conciertos.Remove(concierto);
+            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ConciertoExists(int id)
         {
-            return _repo.ConciertoExists(id);
+            return _context.Conciertos.Any(e => e.IdConcierto == id);
         }
     }
 }
