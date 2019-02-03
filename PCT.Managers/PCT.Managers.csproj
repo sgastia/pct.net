@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PCT.BD\PCT.BD.csproj" />
+    <ProjectReference Include="..\PCT.Dominio\PCT.Dominio.csproj" />
+  </ItemGroup>
+
+</Project>
