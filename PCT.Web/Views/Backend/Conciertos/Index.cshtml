@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutBackend.cshtml";
 }
 
-<h1>Index</h1>
+<h1>ABM Conciertos</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-controller="Conciertos">Create New</a>
 </p>
 <table class="table">
     <thead>
