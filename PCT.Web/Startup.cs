@@ -9,7 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using PCT.BD;
+using PCT.Web.Controllers;
 
 namespace PCT.Web
 {
@@ -38,6 +40,7 @@ namespace PCT.Web
 
             services.AddScoped<IPCTRepository, PCTRepository>();
             services.AddScoped<PCTContext, PCTContext>();
+            services.AddScoped<IStringLocalizer<HomeController>, StringLocalizer<HomeController>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
